@@ -3,7 +3,6 @@
   gherkin-parser, generate entry points, and run them."
   (:require [acceptance.generator :as generator]
             [acceptance.runtime :as runtime]
-            [acceptance.steps :as steps]
             [babashka.fs :as fs]
             [babashka.process :as process]
             [cheshire.core :as json]
@@ -83,7 +82,7 @@
 
 (defn acceptance-main [args]
   (try
-    (let [repo (steps/repo-root)
+    (let [repo (runtime/repo-root)
           parser (tool-wrapper repo "gherkin-parser")
           selected (features args)]
       (doseq [dir ["ir" "generated" "work"]]
@@ -120,7 +119,7 @@
   (try
     (when (not= 1 (count args))
       (throw (infrastructure-error "Usage: bb acceptance-mutate <feature>")))
-    (let [repo (steps/repo-root)
+    (let [repo (runtime/repo-root)
           feature (str/replace (first args) #"\A\./" "")
           parser (tool-wrapper repo "gherkin-parser")
           mutator (tool-wrapper repo "gherkin-mutator")]

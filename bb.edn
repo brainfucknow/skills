@@ -24,4 +24,12 @@
                   (babashka.classpath/add-classpath "tools/compile-skills/spec:tools/acceptance/spec")
                   (require 'speclj.main)
                   (apply (resolve 'speclj.main/-main)
-                         "tools/compile-skills/spec" "tools/acceptance/spec" *command-line-args*))}}}
+                         "tools/compile-skills/spec" "tools/acceptance/spec" *command-line-args*))}
+  property {:doc "Run the property specs of the project tooling, separately from bb spec"
+            :requires ([babashka.deps :as deps])
+            :task (do (deps/add-deps '{:deps {speclj/speclj {:mvn/version "3.13.0"}}})
+                      (babashka.classpath/add-classpath
+                       "tools/compile-skills/spec:tools/compile-skills/property:tools/acceptance/property")
+                      (require 'speclj.main)
+                      (apply (resolve 'speclj.main/-main)
+                             "tools/compile-skills/property" "tools/acceptance/property" *command-line-args*))}}}

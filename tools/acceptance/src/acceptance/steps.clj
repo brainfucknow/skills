@@ -9,14 +9,6 @@
   (:import [java.nio.file FileAlreadyExistsException Files]
            [java.nio.file.attribute FileAttribute]))
 
-(defn repo-root
-  "The directory of the bb.edn this process runs under."
-  []
-  (str (fs/canonicalize
-        (if-let [config (System/getProperty "babashka.config")]
-          (fs/parent config)
-          (fs/cwd)))))
-
 (defn- create-fresh-dir [parent]
   (fs/create-dirs parent)
   (loop [n 1]
@@ -27,7 +19,7 @@
         (recur (inc n))))))
 
 (defn new-world []
-  {:repo (repo-root)})
+  {:repo (runtime/repo-root)})
 
 (defn finish [world passed?]
   (when (and passed? (:fixture world))

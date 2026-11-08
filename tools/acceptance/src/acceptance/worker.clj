@@ -1,7 +1,8 @@
 (ns acceptance.worker
   "APS persistent runner worker: one JSON job per stdin line, one JSON
   response per stdout line. Diagnostics go to stderr only."
-  (:require [acceptance.runtime :as runtime]
+  (:require [acceptance.runner :as runner]
+            [acceptance.runtime :as runtime]
             [babashka.fs :as fs]
             [cheshire.core :as json]
             [clojure.string :as str]))
@@ -54,7 +55,7 @@
 
 (defn worker-main []
   (let [protocol-out *out*
-        load-entry (memoize (requiring-resolve 'acceptance.runner/load-entry))]
+        load-entry (memoize runner/load-entry)]
     (binding [*out* *err*]
       (serve (java.io.BufferedReader. *in*)
              (fn [line]

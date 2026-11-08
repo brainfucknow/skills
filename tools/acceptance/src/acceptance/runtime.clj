@@ -3,8 +3,17 @@
   suite of step handlers. A suite is {:handlers :new-world :finish}: each
   handler is {:pattern regex :run (fn [world & captures] world')}, :new-world
   makes a fresh world per execution, and :finish cleans one up."
-  (:require [cheshire.core :as json]
+  (:require [babashka.fs :as fs]
+            [cheshire.core :as json]
             [clojure.string :as str]))
+
+(defn repo-root
+  "The directory of the bb.edn this process runs under."
+  []
+  (str (fs/canonicalize
+        (if-let [config (System/getProperty "babashka.config")]
+          (fs/parent config)
+          (fs/cwd)))))
 
 (defn fail!
   "Fails the current execution with a diagnostic."

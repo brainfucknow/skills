@@ -35,3 +35,4 @@ The files are generated, so never edit them by hand. These commands need [Babash
 - `bb compile-skill <name>` prints one compiled skill.
 - `bb acceptance` runs the Gherkin acceptance tests in `features/`. It needs the parser first: `swarmforge/bin/sf tool ensure gherkin-parser`.
 - `bb spec` runs the unit specs of the tooling under `tools/`.
+- `bb property` runs the property specs under `tools/*/property/`, kept apart from `bb spec`.
