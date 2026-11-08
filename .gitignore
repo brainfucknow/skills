@@ -8,3 +8,5 @@ tmp/
 .metrics/
 .kilo/worktrees/
 .kilo/agent-manager.json
+build/
+.cpcache/

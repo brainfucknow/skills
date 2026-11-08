@@ -1,0 +1,27 @@
+{:paths ["tools/compile-skills/src" "tools/acceptance/src"]
+ :tasks
+ {compile-skills {:doc "Write compiled/<name>.md for every skill outside misc/ and deprecated/; --check only reports stale files"
+                  :requires ([compile-skills.main :as main])
+                  :task (main/compile-skills-main *command-line-args*)}
+  compile-skill {:doc "Print one compiled skill to stdout"
+                 :requires ([compile-skills.main :as main])
+                 :task (main/compile-skill-main *command-line-args*)}
+  acceptance {:doc "Parse, generate and run the Gherkin acceptance tests in features/"
+              :requires ([acceptance.runner :as runner])
+              :task (runner/acceptance-main *command-line-args*)}
+  acceptance-generate {:doc "Generate acceptance test entry points: <json-ir> <out-dir>"
+                       :requires ([acceptance.generator :as generator])
+                       :task (generator/generate-main *command-line-args*)}
+  acceptance-worker {:doc "Persistent runner worker for gherkin-mutator"
+                     :requires ([acceptance.worker :as worker])
+                     :task (worker/worker-main)}
+  acceptance-mutate {:doc "Run Gherkin acceptance mutation on one feature"
+                     :requires ([acceptance.runner :as runner])
+                     :task (runner/mutate-main *command-line-args*)}
+  spec {:doc "Run every Speclj spec of the project tooling"
+        :requires ([babashka.deps :as deps])
+        :task (do (deps/add-deps '{:deps {speclj/speclj {:mvn/version "3.13.0"}}})
+                  (babashka.classpath/add-classpath "tools/compile-skills/spec:tools/acceptance/spec")
+                  (require 'speclj.main)
+                  (apply (resolve 'speclj.main/-main)
+                         "tools/compile-skills/spec" "tools/acceptance/spec" *command-line-args*))}}}
