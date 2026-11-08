@@ -23,3 +23,16 @@ Agents are welcome to help, but you post the issue, so you own it:
 - **Repro first.** The steps that show the problem come before any analysis.
 - **No pasted specs.** No full proposals, plans, or rewritten `SKILL.md` files. Describe the problem; the fix is ours to design.
 - **Not your project's issues.** If your agent files the specs or tickets for your own project here, it has the wrong repo. Run `/setup-matt-pocock-skills` in your project.
+
+## Compiled skills
+
+`compiled/<skill-name>.md` holds one self-contained Markdown file per skill outside `misc/` and `deprecated/`: the `SKILL.md`, every other file in the skill folder, and the model-invoked skills it calls through the Skill tool. To use a skill in a session without installing it, point the session at its compiled file, for example by its raw GitHub URL.
+
+The files are generated, so never edit them by hand. These commands need [Babashka](https://babashka.org) (`bb`):
+
+- `bb compile-skills` rewrites `compiled/` from `skills/`. Commit the result.
+- `bb compile-skills --check` writes nothing and fails, naming each file, when `compiled/` is out of date.
+- `bb compile-skill <name>` prints one compiled skill.
+- `bb acceptance` runs the Gherkin acceptance tests in `features/`. It needs the parser first: `swarmforge/bin/sf tool ensure gherkin-parser`.
+- `bb spec` runs the unit specs of the tooling under `tools/`.
+- `bb property` runs the property specs under `tools/*/property/`, kept apart from `bb spec`.
