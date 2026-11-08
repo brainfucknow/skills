@@ -31,3 +31,7 @@ Every skill that dispatches a subagent says to start it with a fresh context win
 ### Triage labels
 
 Canonical names, unchanged. See `docs/agents/triage-labels.md`. Issues are judged against [`SCOPE.md`](./SCOPE.md).
+
+## SwarmForge
+
+Follow swarmforge/README.md and swarmforge/roles/orchestrator.md when asked to swarm a feature; delegate subagent roles by name and keep all task bookkeeping in swarmforge/bin/sf.

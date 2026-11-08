@@ -1,0 +1,7 @@
+#!/usr/bin/env bb
+;; sf-tool: the `sf tool` command on its own. Source: swarmforge/tools/sf/.
+(require '[babashka.classpath :as classpath] '[babashka.fs :as fs])
+(let [home (fs/path (fs/parent (fs/canonicalize *file*)) ".." "tools" "sf")]
+  (run! #(classpath/add-classpath (str (fs/path home %))) ["src" "resources"]))
+(require 'sf.tool)
+(System/exit ((resolve 'sf.tool/main) *command-line-args*))
